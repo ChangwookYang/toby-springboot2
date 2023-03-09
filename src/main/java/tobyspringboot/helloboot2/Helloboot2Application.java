@@ -33,10 +33,13 @@ public class Helloboot2Application {
                 @Override
                 protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
                     // super.service(req, resp);
+                    // name request를 받아서 동적인 응답값을 내리도록 수정
+                    String name = req.getParameter("name");
+
                     // 웹 응답의 3대 요소 리 (상태코드 / 헤더 / 바디)
                     resp.setStatus(200);
                     resp.setHeader("Content-Type", "text/plain");
-                    resp.getWriter().println("Hello Servlet "); // BODY
+                    resp.getWriter().println("Hello " + name); // BODY
                 }
             }).addMapping("/hello"); // 서블릿을 추가할때 서블릿 컨테이너가 요청이 들어올때 어느 서블릿에 매핑해줘야할지 결정하는 매핑을 추가한다.
         });
