@@ -36,6 +36,7 @@ public class Helloboot2Application {
         // 대표적으로 인증이나 보안, 다국어 처리, 모든 요청에 대해서 공통적으로 리턴해줘야하는 내용 등을 프론트 컨트롤러가 처리하는게 일반적이다.
         TomcatServletWebServerFactory serverFactory = new TomcatServletWebServerFactory();
         WebServer webServer = serverFactory.getWebServer(servletContext -> {
+            HelloController helloController = new HelloController();
             // hello라는 서블릿을 등록한다. 첫번째는 서블릿명, 두번째는 HttpServlet을 상속하는 익명 클래스 오브젝트를 만들어서 service 메소드를 구현한다.
             // service에서는 request, response가 있고 언제나 요청이 있어야 응답이 있다.
             servletContext.addServlet("frontcontroller", new HttpServlet() {
@@ -44,14 +45,21 @@ public class Helloboot2Application {
                     // super.service(req, resp);
                     // name request를 받아서 동적인 응답값을 내리도록 수정
                     // 인증, 보안, 다국어, 공통 기능
-                    // 프론트 컨트롤러에서 이제 매핑기능을 가져야한다.
+                    // 프론트 컨트롤러에서 이제 **매핑과 **바인딩 기능을 가져야한다.
+                    // 매핑 : URI와 Method 형태를 맞춰준다.
                     if(req.getRequestURI().equals("/hello") && req.getMethod().equals(HttpMethod.GET.name())) {
+
+                        // 바인딩 : request를 알맞은 형태로 바인딩(Dto)
                         String name = req.getParameter("name");
+
+                        // HelloController에 동작을 위임하였다.
+                        // 처리한 결과를 Message의 Body에 입력하였다.
+                        String ret = helloController.hello(name);
 
                         // 웹 응답의 3대 요소 리 (상태코드 / 헤더 / 바디)
                         resp.setStatus(200);
                         resp.setHeader("Content-Type", "text/plain");
-                        resp.getWriter().println("Hello " + name); // BODY
+                        resp.getWriter().println(ret); // BODY
                     } else if (req.getRequestURI().equals("/user")) {
                         // ..
                     } else {
