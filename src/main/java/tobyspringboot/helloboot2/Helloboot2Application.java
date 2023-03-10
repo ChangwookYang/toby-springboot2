@@ -4,6 +4,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 
@@ -36,7 +37,16 @@ public class Helloboot2Application {
         // 대표적으로 인증이나 보안, 다국어 처리, 모든 요청에 대해서 공통적으로 리턴해줘야하는 내용 등을 프론트 컨트롤러가 처리하는게 일반적이다.
         TomcatServletWebServerFactory serverFactory = new TomcatServletWebServerFactory();
         WebServer webServer = serverFactory.getWebServer(servletContext -> {
-            HelloController helloController = new HelloController();
+
+            // HelloController 주석 처리 -> 직접 매핑, 바인딩하지 않고 Spring Container를 사용한다.
+            // HelloController helloController = new HelloController();
+
+            // 스프링 컨테이너를 대표하는 interface로 ApplicationContext가 있다.
+            // 어떤 빈이 들어갈 것인가 리소스에 접근, 이벤트, 구독하는 방법 등의 기능을 구현해야하는 ApplicationContext 인터페이스
+            GenericApplicationContext applicationContext = new GenericApplicationContext();
+            applicationContext.registerBean(HelloController.class);
+            applicationContext.refresh(); // ApplcationContext가 Bean object들을 만들어주게 된다.
+
             // hello라는 서블릿을 등록한다. 첫번째는 서블릿명, 두번째는 HttpServlet을 상속하는 익명 클래스 오브젝트를 만들어서 service 메소드를 구현한다.
             // service에서는 request, response가 있고 언제나 요청이 있어야 응답이 있다.
             servletContext.addServlet("frontcontroller", new HttpServlet() {
@@ -54,6 +64,8 @@ public class Helloboot2Application {
 
                         // HelloController에 동작을 위임하였다.
                         // 처리한 결과를 Message의 Body에 입력하였다.
+                        // HelloController가 어떻게 생성되었는지 모르고 applicationContext를 통해 Bean을 가져오게 된다.
+                        HelloController helloController = applicationContext.getBean(HelloController.class);
                         String ret = helloController.hello(name);
 
                         // 웹 응답의 3대 요소 리 (상태코드 / 헤더 / 바디)
