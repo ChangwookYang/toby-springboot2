@@ -3,12 +3,10 @@ package tobyspringboot.helloboot2;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
-import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -45,6 +43,11 @@ public class Helloboot2Application {
             // 어떤 빈이 들어갈 것인가 리소스에 접근, 이벤트, 구독하는 방법 등의 기능을 구현해야하는 ApplicationContext 인터페이스
             GenericApplicationContext applicationContext = new GenericApplicationContext();
             applicationContext.registerBean(HelloController.class);
+
+            // 어떤 클래스를 가지고 Bean을 만들지 알아야 하기때문에 인터페이스가 아닌 클래스를 넣어준다.
+            // HelloController.class 생성자 파라미터로 SimpleHelloService.class를 받아 생성하고 getBean으로 받아서 사용해야하는데
+            // 주입을 해주는 것은 어떻게 알 수 있을까? 스프링 컨테이너 HelloService를 구현한 클래스가 있는지 파악하고 HelloController에 주입해준다.
+            applicationContext.registerBean(SimpleHelloService.class);
             applicationContext.refresh(); // ApplcationContext가 Bean object들을 만들어주게 된다.
 
             // hello라는 서블릿을 등록한다. 첫번째는 서블릿명, 두번째는 HttpServlet을 상속하는 익명 클래스 오브젝트를 만들어서 service 메소드를 구현한다.
