@@ -1,8 +1,11 @@
 package tobyspringboot.helloboot2;
 
-public class HelloController {
+import java.util.Objects;
 
+public class HelloController {
     public String hello(String name) {
-        return "hello " + name;
+        SimpleHelloService simpleHelloService = new SimpleHelloService();
+
+        return simpleHelloService.sayHello(Objects.requireNonNull(name));
     }
 }
