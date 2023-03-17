@@ -1,17 +1,34 @@
 package tobyspringboot.helloboot2;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
-import org.springframework.web.context.support.GenericWebApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
-@SpringBootApplication
+@Configuration
 public class Helloboot2Application {
 
+    // Factory Method로 Bean Object를 직접만들어서 쓸 수 있다.
+    // 복잡한 설정정보를 나열하는 대신에 Java 코드로 구현하면 간결해지고 이해하기 쉽다.
+    // 이 Factory Method는 스프링 컨테이너가 호출하게된다.
+    // 필요한 오브젝트를 스프링 컨테이너가 넘겨줄 수 있게 파라미터에 HelloService를 추가한다.
+    // 스프링 컨테이너가 Bean오브젝트를 만들기위해 쓰이는 것을 알려주기 위해 Bean 어노테이션을 추가한다.
+    // 또한 스프링 컨테이너가 Bean 오브젝트를 가진 클래스이다.를 인지하도 클래스레벨에도 @Configuration 클래스를 추가한다.
+    @Bean
+    public HelloController helloController(HelloService helloService) {
+        return new HelloController(helloService);
+    }
+
+    @Bean
+    public HelloService helloService() {
+        return new SimpleHelloService();
+    }
+
     public static void main(String[] args) {
-        GenericWebApplicationContext applicationContext = new GenericWebApplicationContext() {
+        AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext() {
             @Override
             protected void onRefresh() {
                 super.onRefresh();
@@ -32,9 +49,8 @@ public class Helloboot2Application {
                 webServer.start();
             }
         };
-        applicationContext.registerBean(HelloController.class);
-        applicationContext.registerBean(SimpleHelloService.class);
-
+        // Bean오브젝트를 가진 클래스를 등록하는 과정이 필요하다.
+        applicationContext.register(Helloboot2Application.class);
         applicationContext.refresh();
     }
 
