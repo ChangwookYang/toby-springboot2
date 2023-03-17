@@ -1,14 +1,14 @@
 package tobyspringboot.helloboot2;
 
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Objects;
 
-@RequestMapping("/hello")
-@Component // 나를 Bean으로 등록해줘
+// @RequestMapping("/hello") RsetController를 선언하면 DispatcherServlet이 이 안에 매핑정보가 담겨있을거라고 생각하므로 생략해도 된다.
+@RestController // 나를 Bean으로 등록해줘
 // 스프링 컨테이너에 있는 컴포넌트 스캐너 클래스들을 빈으로 등록한다.
 public class HelloController {
     private final HelloService helloService;
