@@ -4,28 +4,16 @@ import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactor
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
 @Configuration
+@ComponentScan // @Component가 붙은 클래스들을 찾아서 빈으로 등록해달라
+// applicationContext에 등록된 Helloboot2Application부터 하위 패키지들을 스캔한다.
+// 장점으로 별도 소스에 Bean을 등록할 필요 없이 Component 어노테이션만 추가하면 된다.
 public class Helloboot2Application {
-
-    // Factory Method로 Bean Object를 직접만들어서 쓸 수 있다.
-    // 복잡한 설정정보를 나열하는 대신에 Java 코드로 구현하면 간결해지고 이해하기 쉽다.
-    // 이 Factory Method는 스프링 컨테이너가 호출하게된다.
-    // 필요한 오브젝트를 스프링 컨테이너가 넘겨줄 수 있게 파라미터에 HelloService를 추가한다.
-    // 스프링 컨테이너가 Bean오브젝트를 만들기위해 쓰이는 것을 알려주기 위해 Bean 어노테이션을 추가한다.
-    // 또한 스프링 컨테이너가 Bean 오브젝트를 가진 클래스이다.를 인지하도 클래스레벨에도 @Configuration 클래스를 추가한다.
-    @Bean
-    public HelloController helloController(HelloService helloService) {
-        return new HelloController(helloService);
-    }
-
-    @Bean
-    public HelloService helloService() {
-        return new SimpleHelloService();
-    }
 
     public static void main(String[] args) {
         AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext() {

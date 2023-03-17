@@ -1,5 +1,6 @@
 package tobyspringboot.helloboot2;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -7,6 +8,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.Objects;
 
 @RequestMapping("/hello")
+@Component // 나를 Bean으로 등록해줘
+// 스프링 컨테이너에 있는 컴포넌트 스캐너 클래스들을 빈으로 등록한다.
 public class HelloController {
     private final HelloService helloService;
 
