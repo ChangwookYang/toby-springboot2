@@ -1,4 +1,4 @@
-package tobyspringboot.helloboot2;
+package tobyspringboot.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -15,5 +15,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE) // class, interface, enum에 부여할 수 있는 어노테이션을 만들때 타깃을 Type으로 한다.
 @Configuration
 @ComponentScan
+// @Import({DispatcherServletConfig.class, TomcatWebServerConfig.class}) // Configuration 어노테이션이 붙은 클래스들을 구성정보에 직접 추가할 수 있다.
+@EnableMyAutoConfiguration // @Import 정보들을 별도 메타데이터를 만들었다.
 public @interface MySpringBootAnnotation {
 }
