@@ -29,8 +29,7 @@ public class HelloController {
     // View 대신에 Body에 넣어서 동작하게 하려면 @ResponseBody의 추가가 필요하다.
     // @RestController Annotation을 클래스 레벨에 붙이게되면 DispatcherServlet은 응답을 view가 아닌 Body에 넣어서 응답하는 것으로 인식하게 된다.
     // (@ResponseBody가 붙은것으로 인식한다.)
-    @GetMapping
-    @ResponseBody
+    @GetMapping("/hello")
     public String hello(String name) {
         return helloService.sayHello(Objects.requireNonNull(name));
     }
