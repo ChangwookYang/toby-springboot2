@@ -22,4 +22,12 @@ public class HelloDecorator implements HelloService {
         return "*" + helloService.sayHello(name) + "*";
     }
 
+    // Proxy 패턴
+    // 실체가 존재하는데 실체 대신에 앞에 대신할 것을 놓는다.
+    // HelloController 입장에서는 Proxy가 실제 로직을 갖고 있는 오브젝트를 보는것처럼 알고있지만
+    // 실제로는 이를 대신해서 부가적인 효과를 준다.
+    // 사용 예로는 실제 오브젝트가 비용도 많고 큰 작업일 경우에 서버가 시작될때 미리 만들어놓을필요 없이
+    // 요청이 실제로 들어온 시점에 지연 시켜서 로딩한다. (lazy loading)
+    // 또한, 로컬에 구현했다고 생각했지만 먼 곳에 있는 서버 일 수 있는데. 로컬의 시스템은 서버의 위치를 전혀 신경쓰지 않도록 대리자 역할을 할 수 있다.
+    // 그 이외에도 access control, jpa, 보안 등 다양한 유연함을 제공할 수 있다.
 }
