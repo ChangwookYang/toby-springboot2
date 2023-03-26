@@ -1,5 +1,6 @@
 package tobyspringboot.helloboot2;
 
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
@@ -32,8 +33,12 @@ public class Helloboot2Application {
     // MySpringApplication 을 만들어 리팩토링하였더니
     // SpringApplication.run(Helloboot2Application.class, args);
     // 초기의 형태와 똑같아졌다.
+
+    // Spring Application을 만들었다고 해서
+    // ServletWebServerFactory과 DispatcherServlet을 삭제하면 어떻게 동작할까?
+    // ServletWebServerFactory, DispatcherServlet가 Bean을 찾지 못하여 동작하지 않는다.
     public static void main(String[] args) {
-        MySpringApplication.run(Helloboot2Application.class, args);
+        SpringApplication.run(Helloboot2Application.class, args);
     }
 
 
