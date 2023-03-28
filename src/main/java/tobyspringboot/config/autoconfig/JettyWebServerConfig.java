@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.core.type.AnnotatedTypeMetadata;
+import org.springframework.util.ClassUtils;
 import tobyspringboot.config.MyAutoConfiguration;
 
 @MyAutoConfiguration
@@ -21,7 +22,8 @@ public class JettyWebServerConfig {
 
         @Override
         public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
-            return true;
+            // Server 라는 클래스가 현재 프로젝트에 포함되어 있으면 true로 리턴되어 TomcatWebServiceConfig가 Bean으로 등록되어 사용된다.
+            return ClassUtils.isPresent("org.eclipse.jetty.server.Server", context.getClassLoader());
         }
     }
 }
